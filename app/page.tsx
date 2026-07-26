@@ -29,6 +29,7 @@ const emptyForm: FormState = {
 };
 
 export default function Home() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const [form, setForm] = useState<FormState>(emptyForm);
   const [query, setQuery] = useState("");
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -81,7 +82,7 @@ export default function Home() {
       <header className="brand-row">
         <div className="brand-mark">돈</div>
         <div><strong>돈그릇</strong><span>12월 목표 프로젝트</span></div>
-        <a href="/admin" className="admin-link">운영자</a>
+        <a href={`${basePath}/admin/`} className="admin-link">운영자</a>
       </header>
 
       <section className="hero">
