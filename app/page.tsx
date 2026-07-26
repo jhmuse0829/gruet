@@ -110,8 +110,8 @@ export default function Home() {
           <div className="card-heading"><span>02</span><div><h2>{selected?.name}님의 12월 목표</h2><p>정답은 없어요. 지금 떠오르는 그대로 적어주세요.</p></div></div>
 
           <Field number="1" title="12월 31일까지 꼭 이루고 싶은 목표는 무엇인가요?" hint="가장 중요한 목표 하나를 구체적으로 적어주세요." required value={form.goal} onChange={(v) => update("goal", v)} placeholder="예: 온라인 클래스 월 매출 500만 원 달성" />
-          <Field number="2" title="목표 달성을 확인할 수 있는 숫자나 완료 기준은요?" required value={form.successMetric} onChange={(v) => update("successMetric", v)} placeholder="예: 월 순매출 500만 원, 수강생 100명" />
-          <Field number="3" title="현재는 어디까지 와 있나요?" hint="현재 수치, 준비 정도, 진행 상황을 알려주세요." required value={form.currentState} onChange={(v) => update("currentState", v)} placeholder="예: 클래스 기획 완료, 현재 매출 120만 원" />
+          <Field number="2" title="그 목표를 확인할 수 있는 완료 기준은 무엇일까요?" required value={form.successMetric} onChange={(v) => update("successMetric", v)} placeholder="예: 월 순매출 500만 원, 수강생 100명" />
+          <Field number="3" title="8월 돈그릇 스터디 전까지 어디까지 와 있는지 알려주세요." hint="현재 수치, 준비 정도, 진행 상황을 알려주세요." required value={form.currentState} onChange={(v) => update("currentState", v)} placeholder="예: 클래스 기획 완료, 현재 매출 120만 원" />
           <Field number="4" title="목표를 위해 지금 하고 있는 행동은 무엇인가요?" value={form.currentActions} onChange={(v) => update("currentActions", v)} placeholder="예: 주 3회 콘텐츠 발행, 고객 인터뷰" />
           <Field number="5" title="매주 반복할 핵심 행동 3가지는 무엇인가요?" value={form.weeklyActions} onChange={(v) => update("weeklyActions", v)} placeholder={"1. 잠재 고객 20명 만나기\n2. 콘텐츠 3개 발행\n3. 매출 지표 기록"} />
           <Field number="6" title="이번 주에 반드시 끝낼 한 가지는요?" required value={form.nextAction} onChange={(v) => update("nextAction", v)} placeholder="예: 클래스 소개 페이지 초안 완성" />
