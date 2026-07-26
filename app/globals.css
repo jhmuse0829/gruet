@@ -35,8 +35,12 @@ button,a { -webkit-tap-highlight-color:transparent; }
 .member:hover { transform:translateY(-1px); border-color:#a7beb5; }
 .member>span,.avatar { width:34px; height:34px; border-radius:50%; background:var(--mint); color:var(--green); display:grid; place-items:center; font-weight:800; }
 .member strong { font-size:12px; line-height:1.3; word-break:keep-all; }
+.member strong small { display:block; margin-top:3px; color:#7d877f; font-size:10px; font-weight:700; }
 .member i { width:18px; height:18px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; font-size:10px; font-style:normal; }
 .member.selected { border-color:var(--green); background:#f4f9f6; box-shadow:0 0 0 1px var(--green); }
+.member.submitted { background:#f1f1ed; border-color:#deded7; color:#8b8e88; cursor:not-allowed; opacity:.78; }
+.member.submitted:hover { transform:none; border-color:#deded7; }
+.member.submitted>span,.member.submitted i { background:#a5aaa5; color:#fff; }
 .primary-button,.secondary-button { border:0; border-radius:12px; min-height:50px; padding:0 20px; font-weight:800; cursor:pointer; }
 .primary-button { width:100%; background:var(--green); color:#fff; margin-top:24px; box-shadow:0 10px 20px #1d5a4925; }
 .primary-button span { float:right; }

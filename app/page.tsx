@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { members } from "../data/members";
-import { submitGoal } from "../lib/supabase";
+import { fetchSubmittedMemberIds, submitGoal } from "../lib/supabase";
 
 type FormState = {
   memberId: string;
@@ -35,6 +35,15 @@ export default function Home() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [submittedMemberIds, setSubmittedMemberIds] = useState<Set<string>>(new Set());
+  const [loadingMembers, setLoadingMembers] = useState(true);
+
+  useEffect(() => {
+    fetchSubmittedMemberIds()
+      .then((ids) => setSubmittedMemberIds(new Set(ids)))
+      .catch((reason) => setError(reason instanceof Error ? reason.message : "작성 완료 명단을 불러오지 못했습니다."))
+      .finally(() => setLoadingMembers(false));
+  }, []);
 
   const filteredMembers = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -53,6 +62,7 @@ export default function Home() {
     setSaving(true);
     try {
       await submitGoal(form);
+      setSubmittedMemberIds((current) => new Set(current).add(form.memberId));
       setStep(3);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "저장 중 문제가 생겼습니다. 잠시 후 다시 시도해주세요.");
@@ -94,14 +104,18 @@ export default function Home() {
 
       {step === 1 ? (
         <section className="card member-card">
-          <div className="card-heading"><span>01</span><div><h2>내 이름을 선택해주세요</h2><p>닉네임이나 이름 일부를 검색할 수 있어요.</p></div></div>
+          <div className="card-heading"><span>01</span><div><h2>내 이름을 선택해주세요</h2><p>작성 완료된 이름은 다시 선택할 수 없어요.</p></div></div>
           <label className="search-box"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="이름 또는 닉네임 검색" /></label>
+          {error && <p className="error-message">{error}</p>}
           <div className="member-grid">
-            {filteredMembers.map((member) => (
-              <button key={member.id} className={form.memberId === member.id ? "member selected" : "member"} onClick={() => update("memberId", member.id)}>
-                <span>{member.name.slice(0, 1)}</span><strong>{member.name}</strong><i>{form.memberId === member.id ? "✓" : ""}</i>
-              </button>
-            ))}
+            {filteredMembers.map((member) => {
+              const submitted = submittedMemberIds.has(member.id);
+              return (
+                <button key={member.id} disabled={loadingMembers || submitted} className={`member${form.memberId === member.id ? " selected" : ""}${submitted ? " submitted" : ""}`} onClick={() => update("memberId", member.id)}>
+                  <span>{member.name.slice(0, 1)}</span><strong>{member.name}<small>{submitted ? "작성 완료" : ""}</small></strong><i>{submitted || form.memberId === member.id ? "✓" : ""}</i>
+                </button>
+              );
+            })}
           </div>
           <button className="primary-button" disabled={!form.memberId} onClick={() => setStep(2)}>목표 작성하러 가기 <span>→</span></button>
         </section>

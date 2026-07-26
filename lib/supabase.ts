@@ -8,6 +8,19 @@ export type GoalSubmission = {
 
 function configured() { return Boolean(url && key); }
 
+export async function fetchSubmittedMemberIds() {
+  if (!configured()) throw new Error("Supabase 연결 정보가 필요합니다.");
+  const response = await fetch(`${url}/rest/v1/rpc/list_submitted_member_ids`, {
+    method: "POST",
+    headers: { apikey: key!, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: "{}",
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error("작성 완료 명단을 불러오지 못했습니다.");
+  const rows = await response.json() as Array<{ member_id: string }>;
+  return rows.map((row) => row.member_id);
+}
+
 export async function submitGoal(data: GoalSubmission) {
   if (!configured()) throw new Error("아직 저장 공간 연결이 완료되지 않았습니다. 운영자에게 알려주세요.");
   const response = await fetch(`${url}/rest/v1/rpc/submit_goal`, {

@@ -33,6 +33,21 @@ end; $$;
 revoke all on function public.submit_goal(text,text,text,text,text,text,text,text,text) from public;
 grant execute on function public.submit_goal(text,text,text,text,text,text,text,text,text) to anon, authenticated;
 
+create or replace function public.list_submitted_member_ids()
+returns table(member_id text)
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select goal_responses.member_id
+  from public.goal_responses
+  order by goal_responses.member_id;
+$$;
+
+revoke all on function public.list_submitted_member_ids() from public;
+grant execute on function public.list_submitted_member_ids() to anon, authenticated;
+
 create policy "admin can read responses" on public.goal_responses for select to authenticated using (
   (auth.jwt() ->> 'email') = 'jhmuse0829@gmail.com'
 );
