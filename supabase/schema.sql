@@ -34,5 +34,5 @@ revoke all on function public.submit_goal(text,text,text,text,text,text,text,tex
 grant execute on function public.submit_goal(text,text,text,text,text,text,text,text,text) to anon, authenticated;
 
 create policy "admin can read responses" on public.goal_responses for select to authenticated using (
-  (auth.jwt() ->> 'email') = 'ADMIN_EMAIL_HERE'
+  (auth.jwt() ->> 'email') = 'jhmuse0829@gmail.com'
 );
