@@ -5,7 +5,7 @@ const membersByRegistration = [
 ].map((name, index) => ({ id: `member-${String(index + 1).padStart(2, "0")}`, name }));
 
 // 기존 제출 데이터와 연결되는 ID는 유지하고, 화면 순서만 가나다순에 맞춥니다.
-export const members = [
+const membersInDisplayOrder = [
   ...membersByRegistration.slice(0, 5),
   membersByRegistration[22],
   ...membersByRegistration.slice(5, 21),
@@ -14,3 +14,7 @@ export const members = [
   membersByRegistration[47],
   ...membersByRegistration.slice(31, 47),
 ];
+
+// 제외된 멤버의 기존 ID는 보존해 다른 멤버의 제출 데이터 연결이 바뀌지 않게 합니다.
+const excludedMemberIds = new Set(["member-07", "member-23"]);
+export const members = membersInDisplayOrder.filter((member) => !excludedMemberIds.has(member.id));
